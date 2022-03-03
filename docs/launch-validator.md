@@ -1,0 +1,37 @@
+# Run Photon validator
+
+## 1. Setup an AWS node
+- Ubuntu Server 20.04 LTS 64-bit
+- We would recommend the following (or better): 
+```
+m5.xlarge (4 CPUs and 16GB), 500GB SSD
+```
+ 
+- Open up port 22 for SSH, and port 5050 for both TCP and UDP traffic
+
+## 2. Launch a read-only Photon node
+ - Follow instructions in [launching go-photon readonly node](setup-readonly-node.sh)
+
+Wait for your node to sync up
+
+## 3. Run Photon validator
+- Stop read-only node
+
+```shell script
+killall photon
+```
+
+- Wait until the read-only node has stopped
+
+- Then run your validator node:
+
+```shell script
+nohup photon --genesis $NETWORK --validator.id ID --validator.pubkey 0xPubkey --validator.password /path/to/password &
+```
+, where:
+- `ID` is your validator ID (e.g. 25)
+- `0xPubkey` is your validator public key. You've generated your key with `photon validator new`.
+- `/path/to/password` is a path to a file which contains the password to decrypt the validator key (optional).
+If you omitted the `--validator.password` flag, then you will be prompted for the password in terminal.
+
+It's complete. Your node is running!
